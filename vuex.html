@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vuex</title>
+</head>
+<body>
+    <div id="app">
+        {{msg}}
+        <br>
+        {{msg2}}
+        <br>
+        <Child></Child>
+    </div>
+    <script src="./vue.js"></script>
+    <script src="./vuex.js"></script>
+
+    <script>
+        const store = new Vuex.Store({
+            state: {
+                msg: 'hello vuex'
+            }
+        })
+
+        const Child = {
+            data(){
+                return {
+
+                }
+            },
+            template: `<div>{{msg}}</div>`,
+            computed:{
+                msg(){
+                    return store.state.msg;
+                }
+            }
+        }
+
+        Vue.component('Child',Child);
+
+        const app = new Vue({
+            el: "#app",
+            store: store,
+            computed: {
+                msg2(){
+                    return this.$store.state.msg
+                }
+            },
+            data(){
+                return {
+                    msg: 'hello vue'
+                }
+            },
+            mounted(){
+                
+            }
+        })
+    </script>
+</body>
+</html>
