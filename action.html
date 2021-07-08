@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>action</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="item in list">{{item.title}}</li>
+        </ul>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script src="./vuex.js"></script>
+    <script src="./axios.min.js"></script>
+
+    <script>
+        const store = new Vuex.Store({
+            state: {
+                list: []
+            },
+            mutations:{
+                setList(state,data){
+                    state.list = data;
+                }
+            },
+            actions:{
+                getList(context){
+                    axios.get('https://cnodejs.org/api/v1/topics').then(res=>{
+                        context.commit("setList",res.data.data);
+                    })
+                }
+            }
+
+        })
+
+        const app = new Vue({
+            store,
+            el: '#app',
+            data(){
+                return {
+
+                }
+            },
+            computed:{
+                list(){
+                    return this.$store.state.list
+                }
+            },
+            created(){
+                console.log('我来了吗');
+                this.$store.dispatch("getList");
+            }
+        })
+
+    </script>
+</body>
+</html>
