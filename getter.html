@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getter</title>
+</head>
+<body>
+    <div id="app">
+        过滤state.list名称: {{names}}
+        <br>
+        <h3>所有电影</h3>
+        {{allMovie}}
+        <h3>看过的电影：</h3>
+        {{watchedMovie}}
+        <h3>未看的电影</h3>
+        {{unwatchecMovie}}
+    </div>
+
+    <script src="./js/vue.js"></script>
+    <script src="./js/vuex.js"></script>
+
+    <script>
+        const store = new Vuex.Store({
+            state:{
+                list:[
+                    {
+                        name: '张三',
+                        age: 18
+                    },
+                    {
+                        name: '李四',
+                        age: 20
+                    }
+                ],
+                movies:[
+                    {
+                        name: '攀登者',
+                        watched: true
+                    },
+                    {
+                        name: '冰雪奇缘',
+                        watched: false
+                    },
+                    {
+                        name: '神奇女侠',
+                        watched: true
+                    },
+                    {
+                        name: '1921',
+                        watched: false
+                    },    
+                    {
+                        name: '头号玩家',
+                        watched: true
+                    }                
+                ]
+            },
+            mutations:{
+
+            },
+            actions:{
+
+            },
+            getters:{
+                names(state,getters){
+                    return state.list.map(item=>item.name)
+                },
+                watchedMovie(state,getters){
+                    return state.movies.filter(item => {
+                        if(item.watched){
+                            return item
+                        }
+                    }).map(item => item.name)
+                },
+                allMovie(state,getters){
+                    return state.movies.map(item => item.name)
+                },
+                unwatchecMovie(state,getters){
+                    return state.movies.filter(item=>{
+                        if(!item.watched){
+                            return item
+                        }
+                    }).map(item=>{
+                        return item.name
+                    })
+                }
+            }
+        })
+
+        const app = new Vue({
+            el: '#app',
+            store,
+            computed:{
+                // 得到列表所有名字
+                names(){
+                    return this.$store.getters.names
+                },
+                // 得到所有电影名称
+                allMovie(){
+                    return this.$store.getters.allMovie
+                },
+                // 得到看过的电影名称
+                watchedMovie(){
+                    return this.$store.getters.watchedMovie
+                },
+                // 得到没看过电影的名称
+                unwatchecMovie(){
+                    return this.$store.getters.unwatchecMovie
+                }
+
+            }
+            
+        })
+    </script>
+</body>
+</html>
